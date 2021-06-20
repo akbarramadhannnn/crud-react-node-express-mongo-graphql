@@ -9,7 +9,7 @@ const connectDB = require("./src/config/db");
 //graphql
 const { graphqlHTTP } = require("express-graphql");
 const schema = require("./src/graphql/schema");
-const { root } = require("./src/graphql/resolver");
+const root = require("./src/graphql/resolver");
 //load env vars
 dotenv.config({
   path: "./src/config/config.env",
