@@ -32,7 +32,10 @@ module.exports = {
     };
   },
 
-  getProfileById : async function (args,req) {
-      console.log('args',args)
-  }
+  getProfileById: async function ({ params }, req) {
+    const profile = await Profile.findOne({
+      $or: [{ namaBelakang: params }, { namaDepan: params }],
+    });
+    return profile;
+  },
 };

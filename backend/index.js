@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const dotenv = require("dotenv");
+const cors = require("cors");
 
 //init
 const app = express();
@@ -17,7 +18,7 @@ dotenv.config({
 
 //connect to DB
 connectDB();
-
+app.use(cors());
 app.use(morgan("dev"));
 //graphql
 app.use(
