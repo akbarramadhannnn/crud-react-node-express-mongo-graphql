@@ -11,12 +11,14 @@ const ProfileSchema = new Schema({
   alamat: {
     type: String,
   },
-  //   avatar: String,
+  avatar: {
+    type: String,
+  },
   //   tanggalLahir: Date,
-  //   gender: {
-  //     type: String,
-  //     enum: ["L", "P"],
-  //   },
+  gender: {
+    type: String,
+    enum: ["L", "P"],
+  },
 });
 
 module.exports = mongoose.model("Profile", ProfileSchema);

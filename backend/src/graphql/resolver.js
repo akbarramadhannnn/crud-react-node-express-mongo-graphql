@@ -1,7 +1,7 @@
 const Profile = require("../models/Profile");
 
 module.exports = {
-  Hello() {
+  hello() {
     return "Hello World";
   },
 
@@ -10,8 +10,29 @@ module.exports = {
       namaDepan: profileInput.namaDepan,
       namaBelakang: profileInput.namaBelakang,
       alamat: profileInput.alamat,
+      gender: profileInput.gender,
+      avatar: profileInput.avatar,
     });
 
     return { ...profile._doc, _id: profile._id.toString() };
   },
+
+  getAllProfiles: async function (args, req) {
+    const count = await Profile.find().countDocuments();
+    const profiles = await Profile.find();
+
+    return {
+      data: profiles.map((p) => {
+        console.log({ ...p._doc });
+        return {
+          ...p._doc,
+        };
+      }),
+      total: count,
+    };
+  },
+
+  getProfileById : async function (args,req) {
+      console.log('args',args)
+  }
 };
