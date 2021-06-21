@@ -7,24 +7,24 @@ const schema = buildSchema(`
 
   type Profile{
     _id : ID!
-    namaDepan: String!
-    namaBelakang : String!
-    alamat : String!
-    avatar : String!
-    gender : Gender
     email : String
     password : String
+    namaDepan: String!
+    namaBelakang : String!
+    alamat : String
+    gender : Gender
+    avatar : String!
     msg: String
   }
 
   input profileInputData{
-    namaDepan: String
-    namaBelakang : String
+    email : String!
+    password : String!
+    namaDepan: String!
+    namaBelakang : String!
     alamat : String
-    avatar : String
     gender : Gender
-    email : String
-    password : String
+    avatar : String
   }
 
   input profileParams{
@@ -43,6 +43,8 @@ const schema = buildSchema(`
   }
 
   type RootMutation {
+    register(profileInput: profileInputData): Profile!
+
     createProfile(profileInput: profileInputData): Profile!
     deleteProfile(id:ID!): Profile!
   }
