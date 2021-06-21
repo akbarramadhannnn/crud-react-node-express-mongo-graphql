@@ -14,7 +14,9 @@ const ProfileSchema = new Schema({
   avatar: {
     type: String,
   },
-  //   tanggalLahir: Date,
+  tanggalLahir: {
+    type: Date,
+  },
   gender: {
     type: String,
     enum: ["L", "P"],
