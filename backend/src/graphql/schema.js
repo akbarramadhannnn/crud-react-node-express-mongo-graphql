@@ -5,10 +5,6 @@ const schema = buildSchema(`
     P
   }
 
-  type Query {
-    getProfileById(_id: Int!): Profile
-  }
-
   type Profile{
     _id : ID!
     namaDepan: String!
@@ -16,33 +12,39 @@ const schema = buildSchema(`
     alamat : String!
     avatar : String!
     gender : Gender
+    email : String
+    password : String
+    msg: String
   }
 
   input profileInputData{
-    namaDepan: String!
-    namaBelakang : String!
-    alamat : String!
-    avatar : String!
+    namaDepan: String
+    namaBelakang : String
+    alamat : String
+    avatar : String
     gender : Gender
+    email : String
+    password : String
+  }
+
+  input profileParams{
+    params : String!
   }
 
   type ProfileData{
     data : [Profile!]!
     total : Int!
   }
-
-  type ProfileById{
-    data : Profile!
-  }
-
+  
   type RootQuery {
-    hello: String!
     getAllProfiles : ProfileData
-    getProfileById : ProfileById
+    getProfileById(id: String): Profile!
+    auth(email : String!, password : String!): Profile!
   }
 
   type RootMutation {
     createProfile(profileInput: profileInputData): Profile!
+    deleteProfile(id:ID!): Profile!
   }
   
   schema {

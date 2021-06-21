@@ -1,20 +1,20 @@
 const Profile = require("../models/Profile");
 
 module.exports = {
-  hello() {
-    return "Hello World";
-  },
+  auth: async function ({ email, password }, req) {
+    const profile = await Profile.findOne({ email: email }).select("+password");
 
-  createProfile: async function ({ profileInput }, req) {
-    const profile = await Profile.create({
-      namaDepan: profileInput.namaDepan,
-      namaBelakang: profileInput.namaBelakang,
-      alamat: profileInput.alamat,
-      gender: profileInput.gender,
-      avatar: profileInput.avatar,
-    });
+    if (!profile) {
+      return new Error("Invalid email or password");
+    }
 
-    return { ...profile._doc, _id: profile._id.toString() };
+    const match = await profile.matchPassword(password);
+
+    if (!match) {
+      return new Error("Invalid password");
+    }
+
+    return { ...profile._doc, msg: "Login succes" };
   },
 
   getAllProfiles: async function (args, req) {
@@ -22,17 +22,51 @@ module.exports = {
     const profiles = await Profile.find();
 
     return {
-      data: profiles.map((p) => {
-        console.log({ ...p._doc });
-        return {
-          ...p._doc,
-        };
-      }),
+      data: profiles,
       total: count,
     };
   },
 
-  getProfileById : async function (args,req) {
-      console.log('args',args)
-  }
+  getProfileById: async function ({ id }, req) {
+    const profile = await Profile.findById(id);
+    return profile;
+  },
+
+  createProfile: async function ({ profileInput }, req) {
+    const existing = await Profile.findOne({
+      email: profileInput.email,
+    });
+
+    if (existing) {
+      return new Error("Email already registered");
+    }
+
+    const profile = await Profile.create({
+      namaDepan: profileInput.namaDepan,
+      namaBelakang: profileInput.namaBelakang,
+      alamat: profileInput.alamat,
+      gender: profileInput.gender,
+      avatar: profileInput.avatar,
+      email: profileInput.email,
+      password: profileInput.password,
+    });
+
+    return { ...profile._doc, msg: "Success register user" };
+  },
+
+  updateProfile: async function ({ profileInput }, req) {
+    console.log(profileInput);
+  },
+
+  deleteProfile: async function ({ id }, req) {
+    const profile = await Profile.findById(id);
+
+    if (!profile) {
+      return new Error("Profile not found");
+    }
+
+    await profile.remove();
+
+    return `Profile Deleted`;
+  },
 };
