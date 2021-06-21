@@ -12,15 +12,19 @@ const schema = buildSchema(`
     alamat : String!
     avatar : String!
     gender : Gender
+    email : String
+    password : String
+    msg: String
   }
 
   input profileInputData{
-    _id : ID!
     namaDepan: String
     namaBelakang : String
     alamat : String
     avatar : String
     gender : Gender
+    email : String
+    password : String
   }
 
   input profileParams{
@@ -33,13 +37,14 @@ const schema = buildSchema(`
   }
   
   type RootQuery {
-    hello: String!
     getAllProfiles : ProfileData
-    getProfileById(params: String): Profile!
+    getProfileById(id: String): Profile!
+    auth(email : String!, password : String!): Profile!
   }
 
   type RootMutation {
     createProfile(profileInput: profileInputData): Profile!
+    deleteProfile(id:ID!): Profile!
   }
   
   schema {
